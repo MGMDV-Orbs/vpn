@@ -28,6 +28,7 @@ jobs:
   build:
     executor: vpn/aws
     steps:
+      # Any steps passed here will be executed after the vpn connection is established.
       - vpn/with-vpn-connection:
           after-vpn-steps:
             - checkout
