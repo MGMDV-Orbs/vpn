@@ -1,0 +1,68 @@
+version: 2.1 
+
+executors:
+  aws:
+    machine:
+      enabled: true
+      # The `classic:201808-01` image has a later version of the aws cli
+      # which is important for ECS deployments
+      image: circleci/classic:201808-01
+
+commands:
+  with-vpn-connection:
+    parameters:
+      after-vpn-steps:
+        type: steps
+        default: []
+      vpn-host: 
+        type: string
+        default: $VPN_HOST
+      vpn-server:
+        type: string
+        default: $VPN_SERVER
+      vpn-user:
+        type: string
+        default: $VPN_USER
+      vpn-password:
+        type: string
+        default: $VPN_PASSWORD
+      vpn-gateway-ip:
+        type: string
+        default: $VPN_GATEWAY_IP
+      container-registry-url:
+        type: string
+        default: $CONTAINER_REGISTRY_URL
+
+    steps:  
+      - run: 
+          name: Login to AWS ECR
+          command: | 
+            $(aws ecr get-login --no-include-email --region us-west-2)
+          
+      - run: 
+          # TODO: This image is hosted on Sf AWS account and will need to be 
+          # moved to MGM DV owned account
+          name: Pull OpenConnect Docker Image
+          command: | 
+            docker pull << parameters.container-registry-url >>
+
+      - run: 
+          name: Connect to VPN
+          command: |
+            CONTAINER=$(docker run \
+              --privileged \
+              -dt \
+              --name vpn \
+              --net host \
+              --add-host << parameters.vpn-host >> \
+              -e VPN_SERVER=<< parameters.vpn-server >> \
+              -e VPN_USER=<< parameters.vpn-user >> \
+              -e VPN_PASSWORD=<< parameters.vpn-password >> \
+              << parameters.container-registry-url >>)
+            
+      - run: 
+          name: Verify VPN Connection 
+          command: | 
+            ping << parameters.vpn-gateway-ip >> -c 5
+
+      - steps: << parameters.after-vpn-steps >>
