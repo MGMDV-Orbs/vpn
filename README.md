@@ -1,6 +1,8 @@
 # VPN Orb
 A CircleCI orb which allows a build to connect to MGM Resorts GlobalProtect VPN and pass subsequent steps to be taken.
 
+https://circleci.com/orbs/registry/orb/mgmresorts/vpn
+
 ## Setup
 Add the following environment variables to your build
 
@@ -22,7 +24,7 @@ You can import this orb in your `.cirlceci/config.yml`
 version: 2.1
 
 orbs: 
-  vpn: mgmorbs/vpn@1.0.0
+  vpn: mgmorbs/vpn@0.1.0
 
 jobs:
   build:
