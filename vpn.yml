@@ -32,7 +32,7 @@ commands:
         default: $VPN_GATEWAY_IP
       container-registry-url:
         type: string
-        default: $CONTAINER_REGISTRY_URL
+        default: $VPN_CONTAINER_REGISTRY_URL
 
     steps:  
       - run: 
