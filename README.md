@@ -24,7 +24,7 @@ You can import this orb in your `.cirlceci/config.yml`
 version: 2.1
 
 orbs: 
-  vpn: mgmorbs/vpn@0.1.0
+  vpn: mgmresorts/vpn@0.1.0
 
 jobs:
   build:
