@@ -3,28 +3,15 @@ A CircleCI orb which allows a build to connect to MGM Resorts GlobalProtect VPN 
 
 https://circleci.com/orbs/registry/orb/mgmresorts/vpn
 
-## Setup
-Add the following environment variables to your build
-
-- $VPN_HOST
-- $VPN_SERVER
-- $VPN_USER
-- $VPN_PASSWORD
-- $VPN_GATEWAY_IP
-- $CONTAINER_REGISTRY_URL
-  - Value should be `705869507755.dkr.ecr.us-west-2.amazonaws.com/vpn-open-connect`
-
-Alternatively, you can also pass these is in as parameters to the orb. Please see `vpn.yml` for parameter names.
-
 ## Usage
 
-You can import this orb in your `.cirlceci/config.yml`
+You can import this orb in your `.cirlceci/config.yml` and provide the `context: vpn` to load all necessary environment variables for this orb in the MGMResorts CircleCI org.
 
 ```yml
 version: 2.1
 
 orbs: 
-  vpn: mgmresorts/vpn@0.1.0
+  vpn: mgmresorts/vpn@0.2.0
 
 jobs:
   build:
@@ -48,4 +35,10 @@ jobs:
                 name: Install NPM dependencies
                 command: | 
                 npm install
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - verify-tests-pass
+          context: vpn
 ```
