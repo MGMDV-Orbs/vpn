@@ -1,4 +1,4 @@
-version: 2.1 
+version: 2.1
 
 executors:
   aws:
@@ -15,7 +15,7 @@ commands:
       after-vpn-steps:
         type: steps
         default: []
-      vpn-host: 
+      vpn-host:
         type: string
         default: $VPN_HOST
       vpn-server:
@@ -34,20 +34,20 @@ commands:
         type: string
         default: $VPN_CONTAINER_REGISTRY_URL
 
-    steps:  
-      - run: 
+    steps:
+      - run:
           name: Login to AWS ECR
-          command: | 
+          command: |
             $(aws ecr get-login --no-include-email --region us-west-2)
-          
-      - run: 
-          # TODO: This image is hosted on Sf AWS account and will need to be 
+
+      - run:
+          # TODO: This image is hosted on Sf AWS account and will need to be
           # moved to MGM DV owned account
           name: Pull OpenConnect Docker Image
-          command: | 
+          command: |
             docker pull << parameters.container-registry-url >>
 
-      - run: 
+      - run:
           name: Connect to VPN
           command: |
             CONTAINER=$(docker run \
@@ -55,15 +55,15 @@ commands:
               -dt \
               --name vpn \
               --net host \
-              --add-host << parameters.vpn-host >> \
-              -e VPN_SERVER=<< parameters.vpn-server >> \
+              --add-host "<< parameters.vpn-host >>:<< parameters.vpn-server >>" \
+              -e VPN_SERVER=<< parameters.vpn-host >> \
               -e VPN_USER=<< parameters.vpn-user >> \
               -e VPN_PASSWORD=<< parameters.vpn-password >> \
               << parameters.container-registry-url >>)
-            
-      - run: 
-          name: Verify VPN Connection 
-          command: | 
+
+      - run:
+          name: Verify VPN Connection
+          command: |
             ping << parameters.vpn-gateway-ip >> -c 5
 
       - steps: << parameters.after-vpn-steps >>
