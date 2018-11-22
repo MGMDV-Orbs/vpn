@@ -1,7 +1,7 @@
 # VPN Orb
 A CircleCI orb which allows a build to connect to MGM Resorts GlobalProtect VPN and pass subsequent steps to be taken.
 
-https://circleci.com/orbs/registry/orb/mgmresorts/vpn
+https://circleci.com/orbs/registry/orb/mgmorbs/vpn
 
 ## Usage
 
