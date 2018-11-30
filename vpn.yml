@@ -16,9 +16,11 @@ commands:
         type: steps
         default: []
       vpn-host:
+        description: The hostname for the Global Protect gateway
         type: string
         default: $VPN_HOST
       vpn-server:
+        description: The IP address of the VPN server on the public net
         type: string
         default: $VPN_SERVER
       vpn-user:
@@ -28,6 +30,7 @@ commands:
         type: string
         default: $VPN_PASSWORD
       vpn-gateway-ip:
+        description: The IP address of the internal gateway once connected to the Global Protect gateway
         type: string
         default: $VPN_GATEWAY_IP
       container-registry-url:
