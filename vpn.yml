@@ -4,9 +4,7 @@ executors:
   aws:
     machine:
       enabled: true
-      # The `classic:201808-01` image has a later version of the aws cli
-      # which is important for ECS deployments
-      image: circleci/classic:201808-01
+      image: ubuntu-1604:201903-01
       docker_layer_caching: true
 
 commands:
